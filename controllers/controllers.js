@@ -1,17 +1,29 @@
+const Student = require('../model/Student.model');
 module.exports.contactsController = {
-    getMessage: (req, res) => {
-        res.json('pal')
+    getStudents: (req, res) => {
+      Student.find({}).then(
+        (data) => res.json(data))
     },
 
-    deleteMessage: (req, res) => {
-        res.json("юзер с ID :id удален");
+    deleteStudents: (req, res) => {
+      Student.findOneAndRemove(req.params.id).then(
+      (data) => res.json(data))
       },
       
-      pathMessage: (req, res) => {
-        res.json("юзер с ID :id изменен");
+    pathStudents: (req, res) => {
+      Student.findByIdAndUpdate(req.params.id, {name: req.body.name}).then(
+        (data) => res.json(data))
       },
 
-      postMessage: (req, res) => {
-        res.json("успех");
+    createStudents: (req, res) => {
+      const { name, phone, age } = req.body;
+      console.log(req.body)
+      Student.create({
+        name,
+        phone,
+        age,
+      }).then(() => {
+        res.json("Студент добавлен")
+      })
       }
     }
